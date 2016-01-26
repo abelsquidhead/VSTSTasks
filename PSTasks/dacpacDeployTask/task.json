@@ -1,0 +1,62 @@
+{
+  "id": "3d9433a0-6fb3-11e5-aa77-db904faa6125",
+  "name": "dacpacDeployTask",
+  "friendlyName": "Dacpac Deploy",
+  "description": "This task deploys a dacpac to a database using sqlpackage.exe",
+  "author": "AbelSquidHead",
+  "helpMarkDown": "This task deploys a dacpac to a database using sqlpackage.exe",
+  "category": "Utility",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "demands": [],
+  "version": {
+    "Major": "0",
+    "Minor": "1",
+    "Patch": "0"
+  },
+  "minimumAgentVersion": "1.83.0",
+  "instanceNameFormat": "dacpacDeployTask $(message)",
+  "inputs": [
+    {
+      "name": "cwd",
+      "type": "filePath",
+      "label": "Working Directory",
+      "defaultValue": "$(Agent.HomeDirectory)",
+      "required": false,
+      "helpMarkDown": "Current working directory when dacpacDeployTask is run."
+    },
+    {
+      "name": "connectionString",
+      "type": "string",
+      "label": "Connection String",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Connection string to the target database"
+    },
+	{
+      "name": "dacpacPath",
+      "type": "string",
+      "label": "Dacpac Path",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Path to the Dacpac to deploy"
+    },
+	{
+      "name": "blockOnPossibleDataLoss",
+      "type": "boolean",
+      "label": "Block On Possible Data Loss",
+      "defaultValue": "true",
+      "required": true,
+      "helpMarkDown": "Block database deployment if possible data loss scenario"
+    }
+  ],
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\deployDacPac.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "de623250-c2d8-11e5-9973-c7c6c9a1b74f",
+  "name": "SwapWebSlot",
+  "friendlyName": "Swap Web Deployment Slot",
+  "description": "This task swaps web deployment slots for a web app in Azure",
+  "author": "AbelSquidHead",
+  "helpMarkDown": "Replace with markdown to show in help",
+  "category": "Deploy",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "demands": [],
+  "version": {
+    "Major": "1",
+    "Minor": "0",
+    "Patch": "1"
+  },
+  "minimumAgentVersion": "1.83.0",
+  "instanceNameFormat": "Azure Swap Web Deployment: $(WebSiteName)",
+  "inputs": [
+	{
+      "name": "ConnectedServiceName",
+      "type": "connectedService:Azure:Certificate,UsernamePassword",
+      "label": "Azure Subscription",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Azure subscription to target for deployment."
+    },
+    {
+      "name": "WebSiteName",
+      "type": "pickList",
+      "label": "Web App Name",
+      "defaultValue": "",
+      "required": true,
+	  "properties": {
+        "EditableOptions": "True"
+      }
+    },
+	{
+      "name": "WebSiteLocation",
+      "type": "pickList",
+      "label": "Web App Location",
+      "defaultValue": "South Central US",
+      "required": true,
+      "helpMarkDown": "Select a region for deployment.Possible options are **East US**, **East US 2**, **Central US**, **South Central US**, **West US**, **North Europe**, **West Europe** and others.",     
+      "properties": {
+        "EditableOptions": "True"
+      }
+    },
+	{
+      "name": "Slot1",
+      "type": "string",
+      "label": "Slot 1",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Slot 1"
+    },
+	{
+      "name": "Slot2",
+      "type": "string",
+      "label": "Slot 2",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Slot 2"
+    }
+  ],
+  "dataSourceBindings": [
+    {
+      "target": "WebSiteName",
+      "endpointId": "$(ConnectedServiceName)",
+      "dataSourceName": "AzureWebSiteNames",
+	  "parameters": {
+		"WebSiteLocation": "$(WebSiteLocation)"
+	  }
+    },
+    {
+      "target": "WebSiteLocation",
+      "endpointId": "$(ConnectedServiceName)",
+      "dataSourceName": "AzureLocations"
+    }
+  ],
+  "execution": {
+    "AzurePowerShell": {
+      "target": "$(currentDirectory)\\swapSlots.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "id": "44a52840-75ab-11e5-adb2-ab51c176c121",
+  "name": "ConfigTokenizer",
+  "friendlyName": "Configuration Tokenizer",
+  "description": "This task swaps out your tokens in your configuration files with .token files",
+  "author": "AbelSquidHead",
+  "helpMarkDown": "Replace with markdown to show in help",
+  "category": "Utility",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "demands": [],
+  "version": {
+    "Major": "0",
+    "Minor": "1",
+    "Patch": "9"
+  },
+  "minimumAgentVersion": "1.83.0",
+  "instanceNameFormat": "ConfigTokenizer $(message)",
+  "inputs": [
+    {
+      "name": "cwd",
+      "type": "filePath",
+      "label": "Working Directory",
+      "defaultValue": "$(Agent.HomeDirectory)",
+      "required": false,
+      "helpMarkDown": "Current working directory when ConfigTokenizer is run."
+    },
+    {
+      "name": "tokens",
+      "type": "multiLine",
+      "label": "Tokens",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Configuration tokens, one per line in the form __tokenName__ = tokenValue"
+    }
+  ],
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\SwapTokens.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}
